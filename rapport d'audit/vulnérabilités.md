@@ -26,8 +26,16 @@ Cette vulnérabilité est présente dans le fichier auth.py, dans les fonction :
  
  ### Injection XSS
  
+ Dans le formulaire de création des posts
+ 
  ```<script>alert('XSS test')</script>```
  
  ### hash
+ 
+ MDP non hashé dans la base
+ 
  ### anti bruteforce
- ### sanitization
+ 
+ Pas d'anti brute force sur la page de connextion
+ 
+ ### sanitization ?
