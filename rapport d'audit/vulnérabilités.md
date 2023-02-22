@@ -30,3 +30,4 @@ Cette vulnérabilité est présente dans le fichier auth.py, dans les fonction :
  
  ### hash
  ### anti bruteforce
+ ### sanitization
