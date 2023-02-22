@@ -17,7 +17,7 @@ Cette vulnérabilité est présente dans le fichier auth.py, dans les fonction :
     )
     db.commit()
     
-    ```
+   ```
 
  - login():
  - load_logged_in_user():
