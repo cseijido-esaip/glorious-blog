@@ -23,6 +23,7 @@ Cette vulnérabilité est présente dans le fichier auth.py, dans les fonction :
  - load_logged_in_user():
  - 
  
+ **CORRIGE**
  
  ### Injection XSS
  
@@ -33,6 +34,9 @@ Cette vulnérabilité est présente dans le fichier auth.py, dans les fonction :
  ### hash
  
  MDP non hashé dans la base
+ 
+ 
+ **CORRIGE**
  
  ### anti bruteforce
  
