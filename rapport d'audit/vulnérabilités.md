@@ -39,3 +39,7 @@ Cette vulnérabilité est présente dans le fichier auth.py, dans les fonction :
  Pas d'anti brute force sur la page de connextion
  
  ### sanitization ?
+ 
+ ### Authentification failure
+ 
+ 
