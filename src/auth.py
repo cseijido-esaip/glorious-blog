@@ -5,6 +5,8 @@ import functools
 
 import flask
 
+from werkzeug.security import generate_password_hash, check_password_hash
+
 from db import get_db
 
 
@@ -38,8 +40,8 @@ def register():
         if error is None:
             try:
                 db.execute(
-                    f'INSERT INTO user (username, password) VALUES '
-                    f'("{username}", "{password}")'
+                    "INSERT INTO user (username, password) VALUES (?, ?)",    #la requête est maintenant préparée
+                    (username, generate_password_hash(password)),             #le mot de passe est hashé
                 )
                 db.commit()
             except db.IntegrityError:  # catch this specific exception
@@ -66,12 +68,12 @@ def login():
         db = get_db()
         error = None
         user = db.execute(
-            f'SELECT * FROM user WHERE username = "{username}"'
+            'SELECT * FROM user WHERE username = ?', (username,)     #la requête est maintenant préparée
         ).fetchone()
 
         if user is None:
             error = 'Incorrect username.'
-        elif user['password'] != password:
+        elif not check_password_hash(user['password'], password):    #On hash le mdp en entrée pour le comparé à celui de la base
             error = 'Incorrect password.'
 
         if error is None:
@@ -97,6 +99,8 @@ def logout():
     return response
 
 
+
+
 @bp.before_app_request
 def load_logged_in_user():
     """If user is currently connected, attach user object to context.
@@ -107,7 +111,7 @@ def load_logged_in_user():
         flask.g.user = None
     else:
         flask.g.user = get_db().execute(
-            f'SELECT * FROM user WHERE id = {user_id}'
+            f'SELECT * FROM user WHERE id = ?', (user_id,)   #la requête est maintenant préparée
         ).fetchone()
 
 
