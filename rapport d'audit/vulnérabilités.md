@@ -42,4 +42,4 @@ Cette vulnérabilité est présente dans le fichier auth.py, dans les fonction :
  
  ### Authentification failure
  
- 
+ Il est possible de changer la valeure "user_id" dans le cookie pour changer de session utilisateur
