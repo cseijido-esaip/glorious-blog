@@ -1,0 +1,25 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [1.1.0] - 2023-03-01
+
+### Security
+
+-in auth.py preparation of sql queries at line 43
+-in auth.py preparation of sql queries at line 71
+-in auth.py preparation of sql queries at line 114
+-in auth.py hash of the password before passing it to the db at line 43
+-in blog.py preparation of sql queries at line 58
+-in blog.py preparation of sql queries at line 86
+-in blog.py preparation of sql queries at line 126
+-in blog.py preparation of sql queries at line 127
+-in blog.py preparation of sql queries at line 147
+
+
+### Fixed
+
+-in auth.py hash of the password before its validity in the base at line 76
