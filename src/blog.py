@@ -3,11 +3,11 @@
 """
 
 import flask
+from markupsafe import Markup
 from werkzeug.exceptions import abort
 
 from db import get_db
 from auth import login_required
-
 
 bp = flask.Blueprint(  # declare new blueprint
     name='blog',
@@ -42,13 +42,19 @@ def create():
 
     Returns (str): create view or redirect to index page
     """
+    tag1 = '<'
+    tag2 = '>'
+
     if flask.request.method == 'POST':
         title = flask.request.form['title']
-        body = flask.request.form['body']
+        body = Markup(flask.request.form['body'])  # use Markup to enable autoescaping
         error = None
 
         if not title:
             error = 'Title is required.'
+
+        if body.__contains__(tag1 or tag2):
+            error = "Pas d'injection svp mdr"
 
         if error is not None:
             flask.flash(error, 'error')
@@ -56,11 +62,14 @@ def create():
             db = get_db()
             db.execute(
                 'INSERT INTO post (title, body, author_id)'
-                ' VALUES (?, ?, ?)',   
-                (title, body, flask.g.user["id"])                           #la requête est maintenant préparée
+                ' VALUES (?, ?, ?)',
+                (title, body, flask.g.user["id"])  # la requête est maintenant préparée
             )
             db.commit()
             return flask.redirect(flask.url_for('blog.index'))
+
+            # process the form data here
+        return flask.render_template("blog/index.html", title=title, body=body, error=error)
 
     return flask.render_template('blog/create.html')
 
@@ -83,9 +92,9 @@ def get_post(post_id, check_author=True):
             logged-in user is not author of the post
     """
     post = get_db().execute(
-        'SELECT p.id, title, body, created, author_id, username'            #la requête est maintenant préparée
+        'SELECT p.id, title, body, created, author_id, username'  # la requête est maintenant préparée
         ' FROM post p JOIN user u ON p.author_id = u.id'
-        ' WHERE p.id = ?' ,(post_id,)
+        ' WHERE p.id = ?', (post_id,)
     ).fetchone()
 
     if post is None:
@@ -123,8 +132,8 @@ def update(post_id):
         else:
             db = get_db()
             db.execute(
-                'UPDATE post SET title = ?, body = ', (title, body,),         #la requête est maintenant préparée
-                'WHERE id = ?', (post_id)                                     #la requête est maintenant préparée
+                'UPDATE post SET title = ?, body = ', (title, body,),  # la requête est maintenant préparée
+                'WHERE id = ?', (post_id)  # la requête est maintenant préparée
             )
             db.commit()
             return flask.redirect(flask.url_for('blog.index'))
@@ -144,7 +153,7 @@ def delete(post_id):
     """
     get_post(post_id)
     db = get_db()
-    db.execute('DELETE FROM post WHERE id = ?', (post_id,))                   #la requête est maintenant préparée
+    db.execute('DELETE FROM post WHERE id = ?', (post_id,))  # la requête est maintenant préparée
     db.commit()
     return flask.redirect(flask.url_for('blog.index'))
 

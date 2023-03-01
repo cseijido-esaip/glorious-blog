@@ -10,10 +10,10 @@ import db
 import auth
 import blog
 
-
 app_dir = pathlib.Path(__file__).resolve().parent
 
 app = flask.Flask(__name__)  # instantiate a minimal webserver
+app.jinja_env.autoescape = True  # enable autoescaping
 
 app.config['DATABASE'] = app_dir / 'db.sqlite'  # path to the db file
 app.config['DEBUG'] = True
