@@ -1,0 +1,7 @@
+#changelog
+
+## [1.2] - 03-03-2023
+
+### Fixed
+
+- Faille XSS fixé en rajoutant des fonctions Flask.escape sur le contenu du title et du body dans les fonction create et update de blog.py
