@@ -5,10 +5,13 @@ Main entry point of the blog web app.
 import pathlib
 
 import flask  # import the flask library
-
 import db
 import auth
 import blog
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 
 app_dir = pathlib.Path(__file__).resolve().parent
@@ -17,7 +20,7 @@ app = flask.Flask(__name__)  # instantiate a minimal webserver
 
 app.config['DATABASE'] = app_dir / 'db.sqlite'  # path to the db file
 app.config['DEBUG'] = True
-app.config['SECRET_KEY'] = 'some_random_value'
+app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
 
 
 db.register_db_methods(app)  # register db management methods
